@@ -1,0 +1,705 @@
+/* style.css (Completo con estilos de Autenticación) */
+
+/* Reset básico y fuente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Variables de Color */
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --accent-color: #ffc107;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+
+    --background-color-light: #f8f9fa;
+    --background-secondary-light: #e9ecef;
+    --background-card-light: #ffffff;
+    --text-color-primary-light: #212529;
+    --text-color-secondary-light: #495057;
+    --border-color-light: #dee2e6;
+
+    --background-color-dark: #1a1a2e;
+    --background-secondary-dark: #162447;
+    --background-card-dark: #1f2a60;
+    --text-color-primary-dark: #e0e0e0;
+    --text-color-secondary-dark: #b0b0b0;
+    --border-color-dark: #2a3b7c;
+}
+
+/* Estilos base del body según el tema */
+body {
+    transition: background-color 0.3s, color 0.3s;
+    line-height: 1.6;
+    /* Se define el color de fondo y texto en las clases de tema */
+}
+
+body.light-theme {
+    background-color: var(--background-color-light);
+    color: var(--text-color-primary-light);
+    --current-bg-color: var(--background-color-light);
+    --current-bg-secondary: var(--background-secondary-light);
+    --current-bg-card: var(--background-card-light);
+    --current-text-primary: var(--text-color-primary-light);
+    --current-text-secondary: var(--text-color-secondary-light);
+    --current-border-color: var(--border-color-light);
+}
+
+body.dark-theme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-primary-dark);
+    --current-bg-color: var(--background-color-dark);
+    --current-bg-secondary: var(--background-secondary-dark);
+    --current-bg-card: var(--background-card-dark);
+    --current-text-primary: var(--text-color-primary-dark);
+    --current-text-secondary: var(--text-color-secondary-dark);
+    --current-border-color: var(--border-color-dark);
+}
+
+.app-container {
+    display: flex; /* Cambiado por JS a 'flex' cuando está visible, si está oculto inicialmente, debe ser display: none; */
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--current-bg-secondary);
+    color: var(--current-text-primary);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky; /* Para que se mantenga arriba */
+    top: 0;
+    z-index: 1000; /* Encima de otros contenidos */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.logo-icon {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--current-bg-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--current-border-color);
+}
+
+.search-icon {
+    margin-right: 0.5rem;
+    color: var(--current-text-secondary);
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--current-text-primary);
+    width: 200px;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center; /* Para alinear el botón de logout con los links */
+}
+
+.main-nav li {
+    margin-left: 1.5rem;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: var(--current-text-secondary);
+    font-weight: 500;
+    padding-bottom: 0.3rem;
+    transition: color 0.2s ease, border-bottom-color 0.2s ease;
+    border-bottom: 2px solid transparent;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* Main View Container */
+.main-view-container {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.main-view {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.main-view.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos de Perfil */
+.main-content {
+    display: flex;
+    gap: 20px;
+}
+
+.map-section {
+    flex-basis: 40%;
+    position: relative;
+}
+.map-overlay {
+    position: relative;
+    height: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+#map {
+    height: 100%;
+    width: 100%;
+}
+.map-title {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    z-index: 1000;
+    font-size: 0.9em;
+}
+
+.profile-settings-section {
+    flex-basis: 60%;
+    display: flex;
+    gap: 20px;
+    background-color: var(--current-bg-card);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.sidebar {
+    flex-basis: 250px;
+    border-right: 1px solid var(--current-border-color);
+    padding-right: 20px;
+}
+
+.profile-card {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.profile-icon-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px auto;
+    font-size: 2.5rem;
+}
+.profile-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--current-text-primary);
+}
+.profile-email {
+    font-size: 0.9rem;
+    color: var(--current-text-secondary);
+    word-break: break-all; /* Para emails largos */
+}
+
+.settings-menu ul { list-style: none; }
+.settings-menu li {
+    padding: 12px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    color: var(--current-text-secondary);
+}
+.settings-menu li:hover,
+.settings-menu li.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+.settings-menu li:hover .setting-icon,
+.settings-menu li:hover .arrow-icon,
+.settings-menu li.active .setting-icon,
+.settings-menu li.active .arrow-icon {
+    color: white;
+}
+.setting-icon { margin-right: 10px; color: var(--current-text-secondary); }
+.arrow-icon { font-size: 0.8em; color: var(--current-text-secondary); }
+
+.content-area { flex-grow: 1; }
+.content-section {
+    display: none;
+    animation: fadeInContent 0.4s ease-out;
+}
+.content-section.active { display: block; }
+
+@keyframes fadeInContent {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.content-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--current-text-primary);
+    border-bottom: 1px solid var(--current-border-color);
+    padding-bottom: 10px;
+}
+.content-section h2 i { margin-right: 10px; color: var(--primary-color); }
+.default-icon {
+    font-size: 5rem;
+    color: var(--current-text-secondary);
+    text-align: center;
+    display: block;
+    margin-top: 30px;
+}
+
+/* Formularios en Perfil y Generales */
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: var(--current-text-secondary);
+}
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="password"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--current-border-color);
+    border-radius: 4px;
+    background-color: var(--current-bg-color);
+    color: var(--current-text-primary);
+}
+form hr {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid var(--current-border-color);
+}
+/* Estilos para el feedback en formularios */
+.form-feedback {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    border: 1px solid transparent; /* Borde base */
+}
+.form-feedback.success {
+    background-color: #d4edda; /* Verde claro */
+    color: #155724; /* Texto verde oscuro */
+    border-color: #c3e6cb; /* Borde verde */
+}
+.form-feedback.error {
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24; /* Texto rojo oscuro */
+    border-color: #f5c6cb; /* Borde rojo */
+}
+
+
+/* Botones Genéricos */
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease, opacity 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+.btn-primary { background-color: var(--primary-color); color: white; }
+.btn-primary:hover { background-color: #0056b3; }
+.btn-secondary { background-color: var(--secondary-color); color: white; }
+.btn-secondary:hover { background-color: #545b62; }
+.btn-danger { background-color: var(--danger-color); color: white; }
+.btn-danger:hover { background-color: #c82333; }
+.btn-success { background-color: var(--success-color); color: white; }
+.btn-success:hover { background-color: #1e7e34; }
+.btn-small { padding: 6px 12px; font-size: 0.85rem; }
+.btn + .btn { margin-left: 10px; }
+
+/* Tarjetas en Perfil (para ejemplo de pago) */
+.tarjeta {
+    background-color: var(--current-bg-secondary);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.theme-options label { margin-right: 15px; }
+
+/* Vista Viajes */
+.view-header {
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--current-border-color);
+}
+.view-header h1 { font-size: 1.8rem; color: var(--current-text-primary); }
+.view-header h1 i { margin-right: 10px; color: var(--primary-color); }
+.view-content { padding: 10px; }
+.destination-selector { display: flex; gap: 20px; margin-bottom: 20px; }
+.selector-group { flex: 1; }
+.selector-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+.destination-select {
+    width: 100%; padding: 10px; border: 1px solid var(--current-border-color);
+    border-radius: 4ocheckpx; background-color: var(--current-bg-card); color: var(--current-text-primary);
+}
+.actions { margin-bottom: 25px; }
+.schedule-results-container { margin-top: 20px; }
+.schedule-disclaimer {
+    background-color: var(--accent-color); color: #333; padding: 10px;
+    border-radius: 4px; margin-bottom: 15px; font-size: 0.9em;
+}
+.schedule-route-info { /* Estilo para el párrafo que indica la ruta buscada */
+    font-weight: bold; margin-bottom: 15px; padding: 8px;
+    background-color: var(--current-bg-secondary); border-radius: 4px;
+    text-align: center; font-size: 0.9em;
+}
+.schedule-route-info strong i { margin: 0 5px; } /* Flecha en ruta */
+.schedule-item {
+    background-color: var(--current-bg-card); padding: 15px; border-radius: 6px;
+    margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    /* Modificado para mejor control de las columnas de días */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    align-items: start; /* Align items to the start of their grid area */
+}
+.schedule-item .schedule-route {
+    grid-column: 1 / -1; /* Ocupa todo el ancho */
+    margin-bottom: 10px; padding-bottom: 8px;
+    border-bottom: 1px dashed var(--current-border-color);
+    font-size: 0.95em; color: var(--current-text-secondary);
+    display: flex; align-items: center;
+}
+.schedule-item .schedule-route i.fas.fa-map-signs { margin-right: 8px; color: var(--secondary-color); }
+.schedule-item .schedule-route .route-arrow { margin: 0 8px; font-size: 0.9em; }
+.schedule-item > div { display: flex; align-items: center; } /* Afecta a hijos directos */
+.schedule-item > div > i { margin-right: 8px; color: var(--primary-color); flex-shrink: 0; } /* Iconos en schedule-item */
+.duration { font-size: 0.9em; color: var(--current-text-secondary); margin-left: 5px; }
+.popular-destinations { list-style: none; padding-left: 0; }
+.popular-destinations li {
+    background-color: var(--current-bg-card); padding: 8px 12px; margin-bottom: 8px;
+    border-radius: 4px; border: 1px solid var(--current-border-color);
+}
+.popular-destinations li i { margin-right: 8px; color: var(--secondary-color); }
+
+/* Vista Boletos (Asientos) */
+.seating-view-content {
+    display: flex; gap: 20px; background-color: var(--current-bg-card);
+    padding: 20px; border-radius: 8px;
+}
+.seating-info-panel {
+    flex-basis: 300px; padding: 15px; border: 1px solid var(--current-border-color);
+    border-radius: 6px; background-color: var(--current-bg-secondary);
+}
+.trip-info-placeholder p { margin-bottom: 5px; }
+.seating-filters ul { list-style: none; padding-left: 0; margin-top: 5px; }
+.seating-filters li { display: inline-block; margin-right: 10px; font-size: 0.9em; }
+.seating-summary h4 { margin-top: 15px; margin-bottom: 10px; }
+#selected-seats-list { list-style: none; padding-left: 0; margin-bottom: 10px; font-size: 0.9em; }
+#selected-seats-list li { padding: 3px 0; }
+.seating-summary p strong { font-size: 1.1em; }
+#confirmar-asientos-btn { width: 100%; margin-top: 15px; }
+.seating-layout-container {
+    flex-grow: 1; padding: 15px; border: 1px solid var(--current-border-color);
+    border-radius: 6px; background-color: var(--current-bg-secondary);
+    display: flex; flex-direction: column; align-items: center;
+}
+.layout-title { font-weight: bold; margin-bottom: 15px; font-size: 1.1em; }
+.bus-layout {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+    width: fit-content; margin: 0 auto; padding: 15px;
+    background-color: var(--current-bg-color); border-radius: 8px;
+}
+.seat, .aisle, .structure {
+    width: 45px; height: 45px; display: flex; align-items: center;
+    justify-content: center; border-radius: 5px; font-weight: bold; font-size: 0.9em;
+}
+.seat {
+    background-color: #a5d6a7; color: #1b5e20; cursor: pointer;
+    border: 1px solid #81c784; transition: background-color 0.2s, transform 0.1s;
+}
+.seat:hover { background-color: #81c784; transform: scale(1.05); }
+.seat.selected { background-color: var(--primary-color); color: white; border-color: #0056b3; }
+.seat.occupied { background-color: #ef9a9a; color: #c62828; border-color: #e57373; cursor: not-allowed; }
+.aisle { /* Espacio vacío */ }
+.structure { background-color: #e0e0e0; color: #616161; border: 1px solid #bdbdbd; }
+.structure i { font-size: 1.2em; }
+.seating-legend { display: flex; gap: 20px; margin-top: 20px; }
+.seating-legend div { display: flex; align-items: center; font-size: 0.9em; }
+.legend-box { width: 20px; height: 20px; margin-right: 8px; border-radius: 3px; border: 1px solid #ccc; }
+.legend-box.available { background-color: #a5d6a7; }
+.legend-box.selected { background-color: var(--primary-color); }
+.legend-box.occupied { background-color: #ef9a9a; }
+
+/* Vista Añadir Fondos */
+#fondos-view .view-header h1 { color: var(--current-text-primary); }
+.fondos-content-container {
+    padding: 20px; max-width: none; width: 100%; margin: 20px 0;
+    background-color: var(--current-bg-card); border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.saldo-actual {
+    text-align: center; margin-bottom: 30px; padding: 25px 20px;
+    background-color: var(--current-bg-secondary); border-radius: 6px;
+}
+.saldo-actual h2 {
+    font-size: 1.1em; color: var(--current-text-secondary); margin-bottom: 10px;
+    text-transform: uppercase; letter-spacing: 0.8px; font-weight: 500;
+}
+.saldo-monto { font-size: 2.8em; font-weight: bold; color: var(--success-color); }
+.saldo-monto span { vertical-align: middle; }
+.opciones-recarga h3 {
+    text-align: center; font-size: 1.2em; margin-bottom: 25px; color: var(--current-text-primary);
+    text-transform: uppercase; font-weight: 500; letter-spacing: 0.5px;
+}
+.opcion-recarga-item {
+    display: flex; justify-content: space-between; align-items: center; padding: 18px 20px;
+    margin-bottom: 15px; background-color: var(--current-bg-secondary);
+    border-radius: 6px; border: 1px solid var(--current-border-color);
+    transition: box-shadow 0.2s ease;
+}
+.opcion-recarga-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.opcion-recarga-item span { font-size: 1.4em; font-weight: 500; color: var(--current-text-primary); }
+.btn-comprar-fondos { padding: 10px 25px; font-size: 1em; }
+.fondos-info-texto {
+    margin-top: 30px; padding: 15px; background-color: var(--current-bg-secondary);
+    border-radius: 6px; text-align: center; font-size: 0.9em; color: var(--current-text-secondary);
+    border: 1px dashed var(--current-border-color);
+}
+.fondos-info-texto i { margin-right: 8px; color: var(--info-color); }
+
+/* Media Queries para Responsividad */
+@media (max-width: 992px) {
+    .app-header { flex-direction: column; align-items: flex-start; padding: 1rem; }
+    .search-bar { margin-top: 0.5rem; width: 100%; }
+    .main-nav { margin-top: 1rem; width: 100%; }
+    .main-nav ul { flex-direction: column; align-items: flex-start; } /* Ajuste para logout */
+    .main-nav li { margin-left: 0; margin-bottom: 0.5rem; }
+    .main-nav a { display: block; padding: 0.5rem 0; }
+    #logout-btn { margin-left: 0; padding: 0.5rem 0; } /* Ajuste para logout */
+
+    .main-content, .profile-settings-section { flex-direction: column; }
+    .map-section, .sidebar {
+        margin-bottom: 20px; border-right: none; padding-right: 0;
+    }
+    .seating-view-content { flex-direction: column; }
+    .seating-info-panel { margin-bottom: 20px; }
+}
+
+@media (max-width: 768px) { /* MOBILE_BREAKPOINT */
+    /* .sidebar, .content-area se manejan con JS para el perfil */
+    .bus-layout { grid-template-columns: repeat(5, 1fr); gap: 5px; padding: 10px; }
+    .seat, .aisle, .structure { width: 35px; height: 35px; font-size: 0.8em; }
+    .seating-legend { flex-wrap: wrap; justify-content: center; }
+
+    /* Ajuste para horarios en móvil */
+    .schedule-item {
+        grid-template-columns: 1fr; /* Una columna por defecto */
+        gap: 10px;
+    }
+    .schedule-day-column {
+        width: 100%; /* Ocupa todo el ancho disponible */
+        padding: 10px 0; /* Ajusta el padding para móviles */
+    }
+}
+
+@media (max-width: 600px) {
+    .fondos-content-container { padding: 15px; margin: 10px 0; }
+    .saldo-monto { font-size: 2.2em; }
+    .opcion-recarga-item { flex-direction: column; align-items: stretch; text-align: center; }
+    .opcion-recarga-item span { margin-bottom: 12px; font-size: 1.25em; }
+    .btn-comprar-fondos { width: 100%; }
+
+    .auth-form-container { padding: 20px; } /* Menos padding en auth en móviles */
+    .auth-form h2 { font-size: 1.5em; }
+}
+
+
+/* --- Estilos para la Vista de Autenticación (NUEVOS) --- */
+.auth-view-container {
+    display: flex; /* Se mostrará por JS */
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: var(--current-bg-color);
+}
+
+.auth-form-container {
+    background-color: var(--current-bg-card);
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 420px;
+    color: var(--current-text-primary);
+}
+
+.auth-form h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--primary-color);
+    font-size: 1.8em;
+}
+
+.auth-form .form-group {
+    margin-bottom: 20px;
+}
+
+/* Estos selectores ya heredan de form input general, no es necesario re-declarar propiedades */
+/* .auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+} */
+
+.auth-form input[type="text"]:focus,
+.auth-form input[type="email"]:focus,
+.auth-form input[type="password"]:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.auth-form .btn-block {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+/* .auth-form .form-feedback heredará de .form-feedback general */
+
+.auth-switch {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95em;
+    color: var(--current-text-secondary);
+}
+
+.auth-switch a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+/* Ajustes para el botón de Salir en el nav */
+#logout-btn {
+    background-color: transparent;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    padding: 0; /* Eliminar padding para que el li lo controle mejor */
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    height: 100%; /* Para que tome la altura del li */
+    margin-left: 1.5rem; /* Asegurar que tenga el mismo margen que otros li */
+}
+#logout-btn:hover {
+    color: #c82333; /* Un rojo más oscuro */
+}
+#logout-btn i {
+    margin-right: 5px;
+}
+
+/* --- Nuevos Estilos para las Columnas de Días en Horarios --- */
+/* Asegura que cada columna de día dentro de .schedule-item se vea como una columna */
+.schedule-day-column {
+    display: flex;
+    flex-direction: column; /* Apila el título y los horarios */
+    align-items: flex-start; /* Alinea el texto a la izquierda dentro de la columna */
+    padding: 10px; /* Espaciado interno para las celdas */
+    color: var(--current-text-primary); /* Color del texto general de la columna */
+    text-align: left; /* Asegura la alineación del texto */
+    min-height: 100px; /* Da un alto mínimo a las columnas incluso si tienen poco contenido */
+    flex-shrink: 0; /* Evita que las columnas se encojan demasiado */
+    flex-basis: 180px; /* Sugiere un tamaño base para cada columna */
+    /* Optional: Add a subtle border for visual separation if desired */
+    /* border: 1px solid var(--current-border-color); */
+    /* border-radius: 4px; */
+    /* background-color: var(--current-bg-secondary); */
+}
+
+/* Estilo para el título del día (Lunes a Viernes, Sábados, etc.) */
+.schedule-day-column h4 {
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--primary-color); /* Resalta los títulos de los días */
+    width: 100%; /* El título ocupa todo el ancho de la columna */
+    padding-bottom: 5px; /* Pequeña separación del título a los horarios */
+    border-bottom: 1px solid var(--current-border-color); /* Línea debajo del título del día */
+}
+
+/* Estilo para cada horario individual dentro de la columna del día */
+.schedule-day-column p {
+    margin-bottom: 5px; /* Espaciado entre horarios */
+    font-size: 0.9em;
+    line-height: 1.3; /* Mejora la legibilidad */
+    color: var(--current-text-secondary);
+}
+
+/* Estilo para las notas pequeñas asociadas a un horario */
+.schedule-day-column p small {
+    display: block; /* Asegura que la nota vaya en una nueva línea */
+    font-size: 0.8em;
+    color: var(--current-text-secondary);
+    margin-top: 2px;
+}
+
+/* Ajuste para que los botones tengan un margen superior si se colocan después de la tabla/grid de horarios */
+.mt-3 {
+    margin-top: 1rem !important; /* !important para asegurar la prevalencia si hay conflictos */
+}
+.hidden {
+    display: none !important;
+}

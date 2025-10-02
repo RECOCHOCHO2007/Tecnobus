@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnobus Proyecto - Autenticación</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+
+    <div id="auth-view" class="auth-view-container">
+        <div class="auth-form-container">
+        
+            <form id="login-form" class="auth-form">
+                <h2 id="auth-title">Iniciar Sesión</h2>
+                <div id="login-feedback" class="form-feedback hidden"></div>
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña:</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+                <p class="auth-switch">¿No tienes cuenta? <a href="#" id="show-register-btn">Regístrate aquí</a></p>
+            </form>
+
+            <form id="register-form" class="auth-form hidden">
+                <h2>Crear Cuenta</h2>
+                <div id="register-feedback" class="form-feedback hidden"></div>
+                <div class="form-group">
+                    <label for="register-name">Nombre Completo:</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña:</label>
+                    <input type="password" id="register-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirmar Contraseña:</label>
+                    <input type="password" id="register-confirm-password" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-success btn-block">Registrarme</button>
+                <p class="auth-switch">¿Ya tienes cuenta? <a href="#" id="show-login-btn">Inicia sesión aquí</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="app-container hidden">
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-bus logo-icon" aria-hidden="true"></i>
+                <span>Tecnobus</span>
+            </div>
+            <div class="search-bar">
+                <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                <input type="search" placeholder="Buscar...">
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" data-view="viajes">VIAJES</a></li>
+                    <li><a href="#" data-view="boletos">BOLETOS</a></li>
+                    <li><a href="#" data-view="perfil">PERFIL</a></li>
+                    <li><a href="#" data-view="fondos">AÑADIR FONDOS</a></li>
+                    <li><a href="#" id="logout-btn" title="Cerrar Sesión"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="main-view-container">
+            
+            <div id="perfil-view" class="main-view active">
+                <main class="main-content">
+                    <section class="map-section"> <div class="map-overlay"> <span class="map-title">MAPA GPS (Uruguay)</span> <div id="map"></div> </div> </section>
+                    <section class="profile-settings-section">
+                        <aside class="sidebar">
+                            <div class="profile-card">
+                                <div class="profile-icon-container"> <i class="fas fa-user profile-icon" aria-hidden="true"></i> </div>
+                                <div class="profile-details">
+                                    <p class="profile-name" id="profile-card-name">Nombre Usuario</p>
+                                    <p class="profile-email" id="profile-card-email">email@ejemplo.com</p>
+                                </div>
+                            </div>
+                            <nav class="settings-menu">
+                                <ul>
+                                    <li data-target="info" class="active"> <i class="fas fa-info-circle setting-icon" aria-hidden="true"></i> <span>Tu información</span> <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i> </li>
+                                    <li data-target="cuenta"> <i class="fas fa-user-cog setting-icon" aria-hidden="true"></i> <span>Datos de tu cuenta</span> <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i> </li>
+                                    <li data-target="seguridad"> <i class="fas fa-lock setting-icon" aria-hidden="true"></i> <span>Seguridad</span> <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i> </li>
+                                    <li data-target="tarjetas"> <i class="fas fa-credit-card setting-icon" aria-hidden="true"></i> <span>Tarjetas</span> <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i> </li>
+                                    <li data-target="apariencia"> <i class="fas fa-paint-brush setting-icon" aria-hidden="true"></i> <span>Apariencia</span> <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i> </li>
+                                    <li data-target="idioma"> <i class="fas fa-language setting-icon" aria-hidden="true"></i> <span>Idioma</span> <i class="fas fa-chevron-right arrow-icon" aria-hidden="true"></i> </li>
+                                </ul>
+                            </nav>
+                        </aside>
+                        <section class="content-area">
+                            <div id="default-content" class="content-section hidden"> 
+                                <h2>Bienvenido a tu Perfil</h2>
+                                <p>Selecciona una opción del menú para ver o editar tus detalles.</p>
+                                <i class="fas fa-user-circle default-icon" aria-hidden="true"></i>
+                            </div>
+                            <div id="info-content" class="content-section active"> 
+                                <h2><i class="fas fa-info-circle" aria-hidden="true"></i> Tu información</h2>
+                                <form id="info-form">
+                                    <label for="info-nombre">Nombre:</label>
+                                    <input type="text" id="info-nombre" value="Nombre Usuario" disabled>
+                                    <label for="info-email">Email:</label>
+                                    <input type="email" id="info-email" value="email@ejemplo.com">
+                                    <label for="info-telefono">Teléfono:</label>
+                                    <input type="tel" id="info-telefono" placeholder="Añadir teléfono">
+                                    <div id="info-form-feedback" class="form-feedback hidden"></div>
+                                    <button type="button" class="btn btn-secondary btn-back hidden">Volver</button> 
+                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                </form>
+                            </div>
+                            <div id="cuenta-content" class="content-section hidden">
+                                <h2><i class="fas fa-user-cog" aria-hidden="true"></i> Datos de tu cuenta</h2>
+                                <form id="change-name-form">
+                                    <label for="cuenta-nuevo-nombre">Cambiar nombre para mostrar:</label>
+                                    <input type="text" id="cuenta-nuevo-nombre" placeholder="Ingresa el nuevo nombre" required>
+                                    <div id="name-change-feedback" class="form-feedback hidden"></div>
+                                    <button type="submit" class="btn btn-primary">Guardar Nombre</button>
+                                </form>
+                                <hr>
+                                <p>Otras opciones de cuenta:</p>
+                                <button type="button" class="btn btn-danger">Eliminar Cuenta</button>
+                                <hr>
+                                <button type="button" class="btn btn-secondary btn-back">Volver</button>
+                            </div>
+                            <div id="seguridad-content" class="content-section hidden">
+                                <h2><i class="fas fa-lock" aria-hidden="true"></i> Seguridad</h2>
+                                <form>
+                                    <label for="current-password">Contraseña Actual:</label>
+                                    <input type="password" id="current-password">
+                                    <label for="new-password">Nueva Contraseña:</label>
+                                    <input type="password" id="new-password">
+                                    <label for="confirm-password">Confirmar Nueva Contraseña:</label>
+                                    <input type="password" id="confirm-password">
+                                    <button type="button" class="btn btn-secondary btn-back">Volver</button>
+                                    <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                                </form>
+                                <hr>
+                                <p>Autenticación de dos factores (2FA): <strong>Desactivada</strong></p>
+                                <button type="button" class="btn btn-secondary">Activar 2FA</button>
+                            </div>
+                            <div id="tarjetas-content" class="content-section hidden">
+                                <h2><i class="fas fa-credit-card" aria-hidden="true"></i> Tarjetas</h2>
+                                <p>Administra tus métodos de pago.</p>
+                                <div class="tarjeta">
+                                    **** **** **** 1234 (Visa)
+                                    <button class="btn btn-danger btn-small">Eliminar</button>
+                                </div>
+                                <button type="button" class="btn btn-primary">Añadir Nueva Tarjeta</button>
+                                <hr>
+                                <button type="button" class="btn btn-secondary btn-back">Volver</button>
+                            </div>
+                            <div id="apariencia-content" class="content-section hidden">
+                                <h2><i class="fas fa-paint-brush" aria-hidden="true"></i> Apariencia</h2>
+                                <p>Selecciona el tema:</p>
+                                <div class="theme-options">
+                                    <label><input type="radio" name="theme" value="dark" checked> Oscuro</label>
+                                    <label><input type="radio" name="theme" value="light"> Claro</label>
+                                </div>
+                                <hr>
+                                <button type="button" class="btn btn-secondary btn-back">Volver</button>
+                            </div>
+                            <div id="idioma-content" class="content-section hidden">
+                                <h2><i class="fas fa-language" aria-hidden="true"></i> Idioma</h2>
+                                <label for="language-select">Selecciona el idioma:</label>
+                                <select id="language-select">
+                                    <option value="es" selected>Español (Uruguay)</option>
+                                    <option value="en">English</option>
+                                    <option value="pt">Português</option>
+                                </select>
+                                <hr>
+                                <button type="button" class="btn btn-secondary btn-back">Volver</button>
+                            </div>
+                        </section>
+                    </section>
+                </main>
+            </div>
+
+            <div id="viajes-view" class="main-view hidden">
+                <header class="view-header"> <h1><i class="fas fa-route" aria-hidden="true"></i> Planificar Viaje</h1> </header>
+                <section class="view-content">
+                   <p>Selecciona tu origen y destino dentro de Uruguay:</p>
+                   <div class="destination-selector">
+                        <div class="selector-group">
+                            <label for="origen-select">Origen:</label>
+                            <select id="origen-select" class="destination-select"> <option value="">Selecciona un origen...</option> </select>
+                        </div>
+                        <div class="selector-group">
+                            <label for="destino-select">Destino:</label>
+                            <select id="destino-select" class="destination-select"> <option value="">Selecciona un destino...</option> </select>
+                        </div>
+                   </div>
+                   <div class="actions"> <button id="buscar-horarios-btn" class="btn btn-primary"><i class="fas fa-search" aria-hidden="true"></i> Buscar Horarios</button> </div>
+                   <div id="schedule-results" class="schedule-results-container"> </div>
+                   <h2>Destinos Populares</h2>
+                   <ul class="popular-destinations">
+                        <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Montevideo</li>
+                        <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Punta del Este</li>
+                        <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Colonia del Sacramento</li>
+                        <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Salto</li>
+                        <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Paysandú</li>
+                   </ul>
+                </section>
+            </div>
+
+            <div id="boletos-view" class="main-view hidden">
+                <header class="view-header"><h1><i class="fas fa-chair" aria-hidden="true"></i> Seleccionar Asientos</h1></header>
+                <section class="view-content seating-view-content">
+                    
+                    <div class="seating-info-panel">
+                        <div class="trip-info-placeholder">
+                            <p><strong>Viaje:</strong> Montevideo <i class="fas fa-arrow-right" aria-hidden="true"></i> Punta del Este</p>
+                            <p><strong>Fecha:</strong> Lun, 12 Mayo 2025 - <strong>Hora:</strong> 14:00</p>
+                        </div>
+                        <hr>
+                        <div class="seating-filters">
+                            <div class="filter-group"> <label>Filtrar por:</label> <ul><li>Asiento</li><li>Precio</li></ul></div>
+                            <div class="filter-group"> <button class="btn btn-secondary btn-small">Organizar por <i class="fas fa-sort" aria-hidden="true"></i></button></div>
+                        </div>
+                        <hr>
+                        <div class="seating-summary">
+                            <h4>Asientos Seleccionados</h4>
+                            <ul id="selected-seats-list"><li>No hay asientos seleccionados</li></ul>
+                            <p><strong>Total: $<span id="total-price">0</span> UYU</strong></p>
+                            <button id="confirmar-asientos-btn" class="btn btn-primary" disabled>Confirmar Asientos</button>
+                        </div>
+                    </div>
+                    <div class="seating-layout-container">
+                        <p class="layout-title">Selecciona tus asientos:</p>
+                        <div class="bus-layout">
+                        
+                            <div class="seat available" data-seat="1">1</div> <div class="seat available" data-seat="2">2</div> <div class="aisle"></div> <div class="seat occupied" data-seat="3">3</div> <div class="seat available" data-seat="4">4</div>
+                            <div class="seat available" data-seat="5">5</div> <div class="seat available" data-seat="6">6</div> <div class="aisle"></div> <div class="seat available" data-seat="7">7</div> <div class="seat available" data-seat="8">8</div>
+                            <div class="seat available" data-seat="9">9</div> <div class="seat available" data-seat="10">10</div> <div class="aisle"></div> <div class="seat available" data-seat="11">11</div> <div class="seat occupied" data-seat="12">12</div>
+                            <div class="seat available" data-seat="13">13</div> <div class="seat available" data-seat="14">14</div> <div class="aisle"></div> <div class="seat available" data-seat="15">15</div> <div class="seat available" data-seat="16">16</div>
+                            <div class="seat available" data-seat="17">17</div> <div class="seat available" data-seat="18">18</div> <div class="aisle"></div> <div class="structure">WC</div> <div class="structure"><i class="fas fa-level-up-alt"></i></div>
+                            <div class="seat available" data-seat="21">21</div> <div class="seat available" data-seat="22">22</div> <div class="aisle"></div> <div class="seat available" data-seat="23">23</div> <div class="seat available" data-seat="24">24</div>
+                            <div class="seat available" data-seat="37">37</div> <div class="seat available" data-seat="38">38</div> <div class="aisle"></div> <div class="seat available" data-seat="39">39</div> <div class="seat available" data-seat="40">40</div>
+                        </div>
+                        <div class="seating-legend">
+                            <div><span class="legend-box available"></span> Disponible</div>
+                            <div><span class="legend-box selected"></span> Seleccionado</div>
+                            <div><span class="legend-box occupied"></span> Ocupado</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="fondos-view" class="main-view hidden">
+                <header class="view-header"><h1><i class="fas fa-wallet" aria-hidden="true"></i> Añadir Fondos</h1></header>
+                <section class="view-content fondos-content-container">
+                    
+                    <div class="saldo-actual">
+                        <h2>SALDO ACTUAL DE LA CUENTA</h2>
+                        <p class="saldo-monto">$<span id="saldo-usuario-display">150</span> UYU</p>
+                    </div>
+                    <div class="opciones-recarga">
+                        <h3>SELECCIONA UN MONTO PARA RECARGAR</h3>
+                        <div class="opcion-recarga-item"><span>$ 100 UYU</span><button class="btn btn-success btn-comprar-fondos" data-monto="100">COMPRAR</button></div>
+                        <div class="opcion-recarga-item"><span>$ 200 UYU</span><button class="btn btn-success btn-comprar-fondos" data-monto="200">COMPRAR</button></div>
+                        <div class="opcion-recarga-item"><span>$ 500 UYU</span><button class="btn btn-success btn-comprar-fondos" data-monto="500">COMPRAR</button></div>
+                        <div class="opcion-recarga-item"><span>$ 1000 UYU</span><button class="btn btn-success btn-comprar-fondos" data-monto="1000">COMPRAR</button></div>
+                        <div class="opcion-recarga-item"><span>$ 2000 UYU</span><button class="btn btn-success btn-comprar-fondos" data-monto="2000">COMPRAR</button></div>
+                    </div>
+                    <div class="fondos-info-texto"><p><i class="fas fa-info-circle"></i> Podrás utilizar los fondos para pagar tus viajes en Tecnobus y obtener descuentos exclusivos. Las transacciones son seguras y procesadas al instante.</p></div>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+ 
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/app.js"></script> 
+    
+</body>
+</html>
